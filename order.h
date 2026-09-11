@@ -27,7 +27,7 @@ string getCurrentDateTime()
     tm *ltm = localtime(&now);
 
     char buffer[20];
-    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", ltm);
+    strftime(buffer, sizeof(buffer), "%Y-%m-%d-%H:%M:%S", ltm);
 
     return string(buffer);
 }
@@ -49,6 +49,7 @@ void loadOrders(){
         return;
     }
 
+    freeMemory();
     string line;
     OrderNode *tail = nullptr;
 
@@ -101,7 +102,7 @@ void saveOrders(){
         temp = temp->next;
     }
     myFile.close();
-    cout << "Orders saved successfully.";
+    cout << "Orders saved successfully.\n";
 }
 
 void placeOrder(int customerId){
@@ -109,9 +110,9 @@ void placeOrder(int customerId){
     int proId;
     int quan;
     string date;
-    cout << "Enter Your ProductID:";
+    cout << "Enter Your ProductID: ";
     cin >> proId;
-    cout << "Enter Product Quantity";
+    cout << "Enter Product Quantity: ";
     cin >> quan;
     date = getCurrentDateTime();
 
@@ -153,6 +154,36 @@ void placeOrder(int customerId){
 }
 
 
+void viewAllOrders(){
+    if (orderHead == nullptr){
+        cout << "\n[Info] No Order Found!.\n" ;
+        return;
+    }
+
+    cout << "-----------------------------------------------------------------" << endl;
+    cout << setw(40) << "VIEW ALL ORDERS" << endl;
+    cout << "-----------------------------------------------------------------" << endl;
+    cout << left << setw(10) << "Order ID"
+         << setw(13) << "CustomerID"
+         << setw(13) << "ProductID"
+         << setw(10) << "Quantity"
+         << setw(10) << "Date" << endl;
+    cout << "-----------------------------------------------------------------" << endl;
+
+    OrderNode *temp = orderHead;
+    while (temp != nullptr)
+    {
+        cout << left << setw(10) << temp->data.id
+             << setw(13) << temp->data.customerId
+             << setw(13) << temp->data.productId
+             << setw(10) << temp->data.productId
+             << setw(10) << temp->data.date << endl;
+        temp = temp->next;
+
+    }
+    cout << "-----------------------------------------------------------------" << endl;
+}
+
 
 // // Function Declarations
 // void loadOrders();
@@ -160,36 +191,5 @@ void placeOrder(int customerId){
 // // void placeOrder(int customerId);
 // // void viewAllOrders();
 // // void viewOrdersByCustomer(int customerId);
-
-
-
-// void viewAllOrders()
-// {
-//     if (orderHead == nullptr)
-//     {
-//         cout << "\n[Info] No orders found.\n";
-//         return;
-//     }
-
-//     cout << "\n------------------- ALL ORDERS -------------------\n";
-//     cout << left << setw(10) << "Order ID"
-//          << setw(15) << "Customer ID"
-//          << setw(12) << "Product ID"
-//          << setw(10) << "Quantity"
-//          << setw(15) << "Date" << "\n";
-//     cout << "--------------------------------------------------\n";
-
-//     OrderNode *temp = orderHead;
-//     while (temp != nullptr)
-//     {
-//         cout << left << setw(10) << temp->data.id
-//              << setw(15) << temp->data.customerId
-//              << setw(12) << temp->data.productId
-//              << setw(10) << temp->data.quantity
-//              << setw(15) << temp->data.date << "\n";
-//         temp = temp->next;
-//     }
-//     cout << "--------------------------------------------------\n";
-// }
 
 #endif
