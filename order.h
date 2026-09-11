@@ -5,6 +5,8 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+#include<ctime>
+#include <string>
 #include "type.h"
 
 using namespace std;
@@ -19,6 +21,17 @@ struct OrderNode
 
 OrderNode *orderHead = nullptr;
 
+string getCurrentDateTime()
+{
+    time_t now = time(0);
+    tm *ltm = localtime(&now);
+
+    char buffer[20];
+    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", ltm);
+
+    return string(buffer);
+}
+
 void freeMemory(){
     OrderNode *current = orderHead;
     if (current != nullptr){
@@ -30,7 +43,8 @@ void freeMemory(){
 }
 
 void loadOrders(){
-    ifstream myFile(string("order.csv"));
+    ifstream myFile;
+    myFile.open("orderList.csv");
     if (!myFile.is_open()){
         return;
     }
@@ -70,6 +84,76 @@ void loadOrders(){
     }
     myFile.close();
 }
+
+void saveOrders(){
+    ofstream myFile;
+    myFile.open("orderList.csv");
+    if (!myFile.is_open()){
+        cout << "Open File Unsuccessfully";
+        return;
+    }
+
+    OrderNode *temp = orderHead;
+    while (temp != nullptr)
+    {
+        myFile << temp->data.id << ',' <<temp->data.customerId
+               << ',' <<temp->data.productId << ',' <<temp->data.quantity << ',' <<temp->data.date << "\n";
+        temp = temp->next;
+    }
+    myFile.close();
+    cout << "Orders saved successfully.";
+}
+
+void placeOrder(int customerId){
+    
+    int proId;
+    int quan;
+    string date;
+    cout << "Enter Your ProductID:";
+    cin >> proId;
+    cout << "Enter Product Quantity";
+    cin >> quan;
+    date = getCurrentDateTime();
+
+    int orderId = 1;
+    OrderNode *temp = orderHead;
+    while(temp != nullptr){
+        if (temp->data.id >= orderId){
+            orderId = temp->data.id + 1;
+        }
+        temp = temp->next;
+    }
+    
+
+    Order o;
+    o.id = orderId;
+    o.customerId = customerId;
+    o.productId = proId;
+    o.quantity = quan;
+    o.date = date;
+    OrderNode *newNode = new OrderNode(o);
+
+    if(orderHead != nullptr)
+    {
+        OrderNode *current = orderHead;
+        while (current->next != nullptr)
+        {
+            current = current->next;
+        }
+        current->next = newNode;
+
+    }
+    else
+    {
+        orderHead = newNode;
+    }
+
+    cout << "[Success] Order ID:" << orderId << " placed successfully at " << date << "\n";
+    saveOrders();
+}
+
+
+
 // // Function Declarations
 // void loadOrders();
 // void saveOrders();
@@ -77,67 +161,7 @@ void loadOrders(){
 // // void viewAllOrders();
 // // void viewOrdersByCustomer(int customerId);
 
-// // ---------------------------------------------------------
-// // PERSISTENCE: Load from 'orders.txt' using dynamic memory
-// // ---------------------------------------------------------
-// void loadOrders()
-// {
-//     ifstream inFile("order.csv");
-//     if (!inFile.is_open())
-//         return;
 
-//     // Free existing list memory
-//     OrderNode *current = orderHead;
-//     while (current != nullptr)
-//     {
-//         OrderNode *temp = current;
-//         current = current->next;
-//         delete temp;
-//     }
-//     orderHead = nullptr;
-
-//     string line;
-//     OrderNode *tail = nullptr;
-
-//     while (getline(inFile, line))
-//     {
-//         if (line.empty())
-//             continue;
-
-//         stringstream ss(line);
-//         string idStr, custIdStr, prodIdStr, qtyStr, date;
-
-//         if (getline(ss, idStr, ',') &&
-//             getline(ss, custIdStr, ',') &&
-//             getline(ss, prodIdStr, ',') &&
-//             getline(ss, qtyStr, ',') &&
-//             getline(ss, date, ','))
-//         {
-
-//             Order o;
-//             o.id = stoi(idStr);
-//             o.customerId = stoi(custIdStr);
-//             o.productId = stoi(prodIdStr);
-//             o.quantity = stoi(qtyStr);
-//             o.date = date;
-
-//             // Dynamic Memory Allocation using the Node Wrapper
-//             OrderNode *newNode = new OrderNode(o);
-
-//             if (orderHead == nullptr)
-//             {
-//                 orderHead = newNode;
-//                 tail = newNode;
-//             }
-//             else
-//             {
-//                 tail->next = newNode;
-//                 tail = newNode;
-//             }
-//         }
-//     }
-//     inFile.close();
-// }
 
 // void viewAllOrders()
 // {
