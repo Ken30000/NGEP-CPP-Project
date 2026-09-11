@@ -5,7 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
-#include<ctime>
+#include <ctime>
 #include <string>
 #include "type.h"
 
