@@ -30,7 +30,7 @@ class OrderList {
             loadOrders();
         }
 
-        // Destructor to prevent memory leaks
+        
         ~OrderList()
         {
             freeMemory();
