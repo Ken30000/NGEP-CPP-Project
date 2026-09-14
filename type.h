@@ -1,5 +1,5 @@
-#ifndef type_h
-#define type_h
+#ifndef TYPES_H
+#define TYPES_H
 #include <string>
 using namespace std;
 
