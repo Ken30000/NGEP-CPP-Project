@@ -35,7 +35,7 @@ class OrderList {
         {
             freeMemory();
         }
-
+        //getCurrentTime
         string getCurrentDateTime()
         {
             time_t now = time(0);
@@ -47,6 +47,7 @@ class OrderList {
             return string(buffer);
         }
 
+        //free order from memory
         void freeMemory()
         {
             OrderNode *current = orderHead;
@@ -60,6 +61,7 @@ class OrderList {
             orderTail = nullptr;
         }
 
+        //load order from csv file into memory
         void loadOrders()
         {
             ifstream myFile;
@@ -108,7 +110,7 @@ class OrderList {
             }
             myFile.close();
         }
-
+        //save order into csv file
         void saveOrders()
         {
             ofstream myFile;
@@ -130,6 +132,7 @@ class OrderList {
             cout << "Orders saved successfully.\n";
         }
 
+        //place a order by customerId
         void placeOrder(int customerId)
         {
 
@@ -176,6 +179,7 @@ class OrderList {
             saveOrders();
         }
 
+        //view all orders from csv file 
         void viewAllOrders()
         {
             if (orderHead == nullptr)
@@ -211,6 +215,7 @@ class OrderList {
                  << endl;
         }
 
+        //view orders by customerId 
         void viewOrdersByCustomer(int customerId)
         {
             if (orderHead == nullptr)
