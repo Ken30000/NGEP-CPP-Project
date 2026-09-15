@@ -222,7 +222,7 @@ int main() {
     int choice;
     do {
         cout << "\n==================================================\n";
-        cout << "          STORE MANAGEMENT SYSTEM (C++)          \n";
+        cout << "          STORE MANAGEMENT SYSTEM          \n";
         cout << "==================================================\n";
         cout << " 1. Owner\n";
         cout << " 2. Employee\n";
