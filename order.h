@@ -89,22 +89,30 @@ class OrderList {
                     getline(iss, quantityStr, ',') &&
                     getline(iss, date))
                 {
-                    Order od;
-                    od.id = stoi(idStr);
-                    od.customerId = stoi(customerIdStr);
-                    od.productId = stoi(productIdStr);
-                    od.quantity = stoi(quantityStr);
-                    od.date = date;
-                    OrderNode *newNode = new OrderNode(od);
-                    if (orderHead == nullptr)
+                    if (idStr == "ID" || idStr == "id")
                     {
-                        orderHead = newNode;
-                        orderTail = newNode;
+                        continue;
                     }
-                    else
-                    {
-                        orderTail->next = newNode;
-                        orderTail = newNode;
+                    try {
+                        Order od;
+                        od.id = stoi(idStr);
+                        od.customerId = stoi(customerIdStr);
+                        od.productId = stoi(productIdStr);
+                        od.quantity = stoi(quantityStr);
+                        od.date = date;
+                        OrderNode *newNode = new OrderNode(od);
+                        if (orderHead == nullptr)
+                        {
+                            orderHead = newNode;
+                            orderTail = newNode;
+                        }
+                        else
+                        {
+                            orderTail->next = newNode;
+                            orderTail = newNode;
+                        }
+                    } catch (...) {
+                        continue;
                     }
                 }
             }

@@ -5,10 +5,7 @@
 #include<string>
 #include<fstream>
 using namespace std;
-struct Category {
-    int id;
-    string name;
-};
+#include "type.h"
 
 
 class CategoryMananger {
@@ -16,6 +13,10 @@ class CategoryMananger {
     vector<string> categories;
 
     public:
+    CategoryMananger() {
+        loadCategories();
+    }
+
     //Save categories to file
     void saveCategories(){
         ofstream file("categories.txt");
